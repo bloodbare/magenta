@@ -1,17 +1,17 @@
 new_http_archive(
   name = "pretty_midi",
   build_file = "pretty_midi.BUILD",
-  url = "https://github.com/craffel/pretty-midi/archive/9e3c353b7b77ce4012c70610db4c0d0961c05916.tar.gz",
-  sha256 = "2443ab74f475155d1f79ebdf4537cdfb6e603e77c2747ade7997187dfd588949",
-  strip_prefix = "pretty-midi-9e3c353b7b77ce4012c70610db4c0d0961c05916/pretty_midi",
+  url = "https://github.com/bloodbare/pretty-midi/archive/d3261bedcad82ae1420c655b0318130fec281c3b.tar.gz",
+  sha256 = "4c529ee3ee01bd049da66c5a02b1bb02ef9f14f4e96a452dd6bd74dbf584a2ee",
+  strip_prefix = "pretty-midi-d3261bedcad82ae1420c655b0318130fec281c3b/pretty_midi",
 )
 
 new_http_archive(
   name = "midi",
   build_file = "python_midi.BUILD",
-  url = "https://github.com/vishnubob/python-midi/archive/4b7a229f6b340e7424c1fccafa9ac543b9b3d605.tar.gz",
-  sha256 = "27dcc9e67db0f3fd56420f5f21c7b70f949716a1cfee4e041cd0b1155cef7c4e",
-  strip_prefix = "python-midi-4b7a229f6b340e7424c1fccafa9ac543b9b3d605/src",
+  url = "https://github.com/vishnubob/python-midi/archive/abb85028c97b433f74621be899a0b399cd100aaa.tar.gz",
+  sha256 = "e1f58e8e13109162fa4f3ba8053e434df68014317780d43e53d1ac6a1a798c0b",
+  strip_prefix = "python-midi-abb85028c97b433f74621be899a0b399cd100aaa/src",
 )
 
 git_repository(

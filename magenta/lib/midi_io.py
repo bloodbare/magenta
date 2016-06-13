@@ -149,7 +149,7 @@ def midi_to_sequence_proto(midi_data, continue_on_exception=False):
 
   for program, instrument, midi_control_change in midi_control_changes:
     control_change = sequence.control_changes.add()
-    control_change.instrument = instrument
+    control_change.instrument = int(instrument)
     control_change.program = int(program)
     control_change.time = midi_control_change.time
     control_change.control_number = midi_control_change.number

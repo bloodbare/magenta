@@ -72,8 +72,8 @@ def convert_directory(root_dir, sub_dir, sequence_writer, recursive=False):
       if recursive:
         recurse_sub_dirs.append(os.path.join(sub_dir, file_in_dir))
       continue
-    sequence = midi_io.midi_to_sequence_proto(full_file_path,
-        # tf.gfile.FastGFile(full_file_path, 'rb').read(),
+    sequence = midi_io.midi_to_sequence_proto(
+        full_file_path,
         continue_on_exception=True)
     if sequence is None:
       sequences_skipped += 1

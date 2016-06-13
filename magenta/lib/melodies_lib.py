@@ -534,4 +534,3 @@ def extract_melodies(sequence, steps_per_beat=4, min_bars=7,
     melodies.append(melody)
 
   return melodies
-
