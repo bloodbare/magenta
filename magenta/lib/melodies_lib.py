@@ -443,7 +443,7 @@ class Melody(object):
     transpose_amount = (
         key_diff +
         NOTES_PER_OCTAVE * int(round(center_diff / float(NOTES_PER_OCTAVE))))
-    for i in xrange(len(self.events)):
+    for i in range(len(self.events)):
       # Transpose MIDI pitches. Special events below MIN_MIDI_PITCH are not changed.
       if self.events[i] >= MIN_MIDI_PITCH:
         self.events[i] += transpose_amount

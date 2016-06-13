@@ -17,7 +17,7 @@ Input and output wrappers for converting between MIDI and other formats.
 """
 
 from collections import defaultdict
-from cStringIO import StringIO
+from io import StringIO
 import sys
 
 import pretty_midi
@@ -68,7 +68,7 @@ def midi_to_sequence_proto(midi_data, continue_on_exception=False):
     midi = midi_data
   else:
     try:
-      midi = pretty_midi.PrettyMIDI(StringIO(midi_data))
+      midi = pretty_midi.PrettyMIDI(midi_data)
     except:
       if continue_on_exception:
         tf.logging.error('Midi decoding error %s: %s', sys.exc_info()[0],
@@ -96,7 +96,7 @@ def midi_to_sequence_proto(midi_data, continue_on_exception=False):
     key_signature = sequence.key_signatures.add()
     key_signature.time = midi_key.time
     key_signature.key = midi_key.key_number % 12
-    midi_mode = midi_key.key_number / 12
+    midi_mode = int(midi_key.key_number / 12)
     if midi_mode == 0:
       key_signature.mode = key_signature.MAJOR
     elif midi_mode == 1:
@@ -133,8 +133,8 @@ def midi_to_sequence_proto(midi_data, continue_on_exception=False):
 
   for program, instrument, midi_note in midi_notes:
     note = sequence.notes.add()
-    note.instrument = instrument
-    note.program = program
+    note.instrument = int(instrument)
+    note.program = int(program)
     note.start_time = midi_note.start
     note.end_time = midi_note.end
     note.pitch = midi_note.pitch
@@ -150,7 +150,7 @@ def midi_to_sequence_proto(midi_data, continue_on_exception=False):
   for program, instrument, midi_control_change in midi_control_changes:
     control_change = sequence.control_changes.add()
     control_change.instrument = instrument
-    control_change.program = program
+    control_change.program = int(program)
     control_change.time = midi_control_change.time
     control_change.control_number = midi_control_change.number
     control_change.control_value = midi_control_change.value
@@ -254,15 +254,13 @@ def midi_file_to_sequence_proto(midi_file, continue_on_exception=False):
   Raises:
     MIDIConversionError: Invalid midi_file and continue_on_exception is False.
   """
-  with tf.gfile.Open(midi_file, 'r') as f:
-    midi_as_string = f.read()
-    try:
-      return midi_to_sequence_proto(midi_as_string)
-    except MIDIConversionError, e:
-      if continue_on_exception:
-        return None
-      else:
-        raise MIDIConversionError(e)
+  try:
+    return midi_to_sequence_proto(midi_file)
+  except MIDIConversionError as e:
+    if continue_on_exception:
+      return None
+    else:
+      raise MIDIConversionError(e)
 
 
 def sequence_proto_to_midi_file(sequence, output_file):

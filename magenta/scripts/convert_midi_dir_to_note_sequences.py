@@ -35,7 +35,7 @@ tf.app.flags.DEFINE_string('midi_dir', None,
 tf.app.flags.DEFINE_string('output_file', None,
                            'Path to output TFRecord file. Will be overwritten '
                            'if it already exists.')
-tf.app.flags.DEFINE_bool('recursive', False,
+tf.app.flags.DEFINE_boolean('recursive', False,
                          'Whether or not to recurse into subdirectories.')
 
 
@@ -72,8 +72,8 @@ def convert_directory(root_dir, sub_dir, sequence_writer, recursive=False):
       if recursive:
         recurse_sub_dirs.append(os.path.join(sub_dir, file_in_dir))
       continue
-    sequence = midi_io.midi_to_sequence_proto(
-        tf.gfile.FastGFile(full_file_path).read(),
+    sequence = midi_io.midi_to_sequence_proto(full_file_path,
+        # tf.gfile.FastGFile(full_file_path, 'rb').read(),
         continue_on_exception=True)
     if sequence is None:
       sequences_skipped += 1
@@ -98,12 +98,12 @@ def main(unused_argv):
     tf.logging.fatal("--midi_dir required")
   if not FLAGS.output_file:
     tf.logging.fatal("--output_file required")
-  with note_sequence_io.NoteSequenceRecordWriter(
-      FLAGS.output_file) as sequence_writer:
-    sequences_written = convert_directory(FLAGS.midi_dir, '', sequence_writer,
-                                          FLAGS.recursive)
-    tf.logging.info("Wrote %d NoteSequence protos to '%s'", sequences_written,
-                    FLAGS.output_file)
+
+  sequence_writer = note_sequence_io.NoteSequenceRecordWriter(FLAGS.output_file)
+  sequences_written = convert_directory(FLAGS.midi_dir, '', sequence_writer,
+                                        FLAGS.recursive)
+  tf.logging.info("Wrote %d NoteSequence protos to '%s'", sequences_written,
+                  FLAGS.output_file)
 
 
 if __name__ == '__main__':

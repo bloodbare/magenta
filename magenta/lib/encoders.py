@@ -83,7 +83,7 @@ def basic_one_hot_encoder(melody, steps_per_beat=4, min_note=48, max_note=84,
 
   input_features = [tf.train.Feature(float_list=tf.train.FloatList(value=input_))
                     for input_ in inputs]
-  label_features = [tf.train.Feature(int64_list=tf.train.Int64List(value=[label]))
+  label_features = [tf.train.Feature(int64_list=tf.train.Int64List(value=[int(label)]))
                     for label in labels]
   feature_list = {
       'inputs': tf.train.FeatureList(feature=input_features),
