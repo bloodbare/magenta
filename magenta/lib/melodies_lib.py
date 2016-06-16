@@ -399,7 +399,7 @@ class Melody(object):
         # Give the note an end time now just to be sure it gets closed.
         current_sequence_note.end_time = (
             (step + 1) * seconds_per_step + sequence_start_time)
-        current_sequence_note.pitch = note
+        current_sequence_note.pitch = int(note)
         current_sequence_note.velocity = velocity
         current_sequence_note.instrument = instrument
 

@@ -115,7 +115,7 @@ def make_onehot(int_list, one_hot_length):
   encoded value.
   For example: 5 as a one-hot vector is [0, 0, 0, 0, 0, 1, 0, 0, 0, ...]
   """
-  return [[1.0 if j == i else 0.0 for j in xrange(one_hot_length)]
+  return [[1.0 if j == i else 0.0 for j in range(one_hot_length)]
           for i in int_list]
 
 
@@ -167,10 +167,10 @@ def sampler_loop(graph, checkpoint_dir, primer, num_gen_steps):
                                   dtype=int)})
 
   # Sample from model repeatedly to generate melodies.
-  generated_sequences = [list() for i in xrange(batch_size)]
+  generated_sequences = [list() for i in range(batch_size)]
   last_outputs = [melody_sequence] * batch_size
   singleton_lengths = np.full(batch_size, 1, dtype=int)
-  for i in xrange(num_gen_steps):
+  for i in range(num_gen_steps):
     input_batch = np.transpose(
         [make_onehot(last_outputs, basic_rnn_ops.NUM_CLASSES)], (1, 0, 2))
     state, batch_logits, batch_softmax = session.run(
@@ -225,14 +225,14 @@ def main(_):
   graph = make_graph(hparams_string=FLAGS.hparams)
 
   checkpoint_dir = os.path.join(FLAGS.experiment_run_dir, 'train')
-  
+
   generated = []
   while len(generated) < FLAGS.num_outputs:
     generated.extend(sampler_loop(graph, checkpoint_dir,
                                   extracted_melodies[0],
                                   FLAGS.num_steps))
 
-  for i in xrange(FLAGS.num_outputs):
+  for i in range(FLAGS.num_outputs):
     sequence = generated[i].to_sequence(bpm=bpm)
     midi_io.sequence_proto_to_midi_file(
         sequence,
